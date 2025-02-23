@@ -7,6 +7,23 @@ using namespace std;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 const char* WINDOW_TITLE = "Tetris";
+const int GRID_WIDTH = 300;
+const int GRID_HEIGHT = 600;
+const int GRID_X = (SCREEN_WIDTH - GRID_WIDTH) / 2;
+const int GRID_Y = (SCREEN_HEIGHT - GRID_HEIGHT) / 2;
+const int CELL_SIZE = 30;
+const int ROWS = GRID_HEIGHT / CELL_SIZE;
+const int COLS = GRID_WIDTH / CELL_SIZE;
+
+void renderGrid(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for (int i = 0; i <= ROWS; i++) {
+        SDL_RenderDrawLine(renderer, GRID_X, GRID_Y + i * CELL_SIZE, GRID_X + GRID_WIDTH, GRID_Y + i * CELL_SIZE);
+    }
+    for (int j = 0; j <= COLS; j++) {
+        SDL_RenderDrawLine(renderer, GRID_X + j * CELL_SIZE, GRID_Y, GRID_X + j * CELL_SIZE, GRID_Y + GRID_HEIGHT);
+    }
+}
 
 int main(int argc, char* argv[]) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -30,7 +47,10 @@ int main(int argc, char* argv[]) {
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 225);
         SDL_RenderClear(renderer);
-
+        
+        // draw grid cells
+        renderGrid(renderer);
+        
         SDL_RenderPresent(renderer);
     }
     SDL_DestroyRenderer(renderer);
